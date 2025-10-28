@@ -1,0 +1,54 @@
+class Node {
+    var key: Int
+    var left: Node?
+    var right: Node?
+    
+    init(_ key: Int) {
+        self.key = key
+    }
+}
+
+class BST {
+    private var root: Node?
+    
+    func insert(_ key: Int) {
+        root = insertHelper(root, key)
+    }
+    
+    private func insertHelper(_ node: Node?, _ key: Int) -> Node? {
+        guard let current = node else {
+            return Node(key)
+        }
+        
+        if key < current.key {
+            current.left = insertHelper(current.left, key)
+        } else if key > current.key {
+            current.right = insertHelper(current.right, key)
+        }
+        return current
+    }
+    
+    func search(_ key: Int) -> Bool {
+        return searchHelper(root, key)
+    }
+    
+    private func searchHelper(_ node: Node?, _ key: Int) -> Bool {
+        guard let current = node else { return false }
+        
+        if key == current.key { return true }
+        else if key < current.key {
+            return searchHelper(current.left, key)
+        } else {
+            return searchHelper(current.right, key)
+        }
+    }
+}
+
+let tree = BST()
+tree.insert(10)
+tree.insert(5)
+tree.insert(15)
+tree.insert(7)
+
+print(tree.search(7))   // true
+print(tree.search(20))  // false
