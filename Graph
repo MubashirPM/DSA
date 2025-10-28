@@ -1,0 +1,39 @@
+// Only for dfs and bfs 
+let graph: [String: [String]] = [
+    "A": ["B", "C"],
+    "B": ["D"],
+    "C": ["E"],
+    "D": ["E"],
+    "E": []
+]
+
+// BFS Traversal
+func bfs(_ start: String, _ graph: [String: [String]]) {
+    var visited: Set<String> = []
+    var queue: [String] = [start]
+    print("BFS Traversal:")
+    
+    while !queue.isEmpty {
+        let node = queue.removeFirst()
+        if visited.contains(node) { continue }
+        print(node)
+        visited.insert(node)
+        queue += graph[node] ?? []
+    }
+}
+
+// DFS Traversal
+func dfs(_ node: String, _ graph: [String: [String]], _ visited: inout Set<String>) {
+    if visited.contains(node) { return }
+    print(node)
+    visited.insert(node)
+    for neighbor in graph[node] ?? [] {
+        dfs(neighbor, graph, &visited)
+    }
+}
+
+bfs("A", graph)
+
+print("\nDFS Traversal:")
+var visitedDFS: Set<String> = []
+dfs("A", graph, &visitedDFS)
