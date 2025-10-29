@@ -1,0 +1,24 @@
+func  binarySearch(_ array :[Int],_ target : Int) -> Int? {
+    var left = 0
+    var right = array.count - 1
+    
+    while left <= right {
+        let mid = (left + right) / 2
+         
+         if array[mid] == target {
+             return mid
+         } else if array[mid] == target {
+             left = mid + 1
+         } else {
+             right = mid - 1
+         }
+         
+    }
+    return nil 
+}
+let numbers = [ 2,4,6,8,10,12,14]
+if let index = binarySearch(numbers ,2){
+    print("Founded ",index)
+} else {
+    print("Not found")
+}
