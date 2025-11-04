@@ -1,54 +1,85 @@
 class Node {
-    var key: Int
-    var left: Node?
-    var right: Node?
-    
-    init(_ key: Int) {
-        self.key = key
+    var key : Int
+    var left : Node?
+    var right : Node?
+    init(_ key : Int) {
+        self.key = key 
     }
 }
-
 class BST {
-    private var root: Node?
+    private var root : Node?
     
-    func insert(_ key: Int) {
-        root = insertHelper(root, key)
+    func insert(_ key : Int) {
+        root = insertHelper(root,key)
+        print("Inserted",key)
     }
-    
-    private func insertHelper(_ node: Node?, _ key: Int) -> Node? {
+    private func insertHelper(_ node : Node?,_ key : Int) -> Node? {
         guard let current = node else {
             return Node(key)
         }
-        
         if key < current.key {
-            current.left = insertHelper(current.left, key)
+            current.left = insertHelper(current.left,key)
         } else if key > current.key {
-            current.right = insertHelper(current.right, key)
+            current.right = insertHelper(current.right,key)
         }
         return current
     }
-    
-    func search(_ key: Int) -> Bool {
-        return searchHelper(root, key)
+    func search(_ key : Int) -> Bool {
+        return searchHelper(root,key)
     }
-    
-    private func searchHelper(_ node: Node?, _ key: Int) -> Bool {
-        guard let current = node else { return false }
+    private func searchHelper(_ node : Node?,_ key : Int) -> Bool {
+        guard let current = node else {return false}
         
-        if key == current.key { return true }
-        else if key < current.key {
-            return searchHelper(current.left, key)
+        if key == current.key {
+            return true 
+        } else if key < current.key {
+            return searchHelper(current.left,key)
         } else {
-            return searchHelper(current.right, key)
+            return searchHelper(current.right,key)
         }
     }
+    func inorder(){
+        print("Inorder Traversal : ",terminator : " ")
+        inorderHelper(root)
+        print()
+    }
+    func inorderHelper(_ node : Node?){
+        guard let current = node else {return}
+        inorderHelper(current.left)
+        print(current.key,terminator: " ")
+        inorderHelper(current.right)
+    }
+    func findKthSmallest(_ k : Int) -> Int? {
+        var count = 0
+        var result : Int? = nil
+        inoderKth(root,k,&count,&result)
+        return result
+    }
+    private func inoderKth(_ node : Node?,_ k : Int,_ count : inout Int,_ result : inout Int?){
+        guard let node = node else {return}
+        
+        inoderKth(node.left,k,&count,&result)
+        count += 1
+        if count == k {
+            result = node.key
+            return 
+        }
+        inoderKth(node.right,k,&count,&result)
+    }
 }
-
 let tree = BST()
+tree.insert(12)
+tree.insert(23)
+tree.insert(22)
+tree.insert(44)
 tree.insert(10)
-tree.insert(5)
-tree.insert(15)
-tree.insert(7)
 
 print(tree.search(7))   // true
 print(tree.search(20))  // false
+
+
+if let kth = tree.findKthSmallest(4) {
+    print("3rd smallest element is \(kth)")
+} else {
+    print("Invalid k")
+}
